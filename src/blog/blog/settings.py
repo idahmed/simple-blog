@@ -40,9 +40,11 @@ INSTALLED_APPS = [
 
     #third party apps
     'crispy_forms',
+    'rest_framework',
     
     #local apps
     'users',
+    'main',
 ]
 
 AUTH_USER_MODEL = 'users.User'
