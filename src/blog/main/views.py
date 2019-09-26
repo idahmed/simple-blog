@@ -6,7 +6,7 @@ from django.contrib import messages
 from .models import Post
 from .forms import PostForm, CommentForm
 
-class Main(View):
+class Home(View):
     """
     main page view.
     """
@@ -17,7 +17,7 @@ class Main(View):
         return render(request, 'main/home.html', {'form':form, 'posts':posts})
 
     def post(self, request):
-        form = PostForm(request.POST)
+        form = PostForm(request.POST, request.FILES)
         if form.is_valid():
             form.save(commit=False)
             form.instance.owner = self.request.user
