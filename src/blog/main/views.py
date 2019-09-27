@@ -21,12 +21,12 @@ class Home(View):
         posts = Post.objects.all().order_by('-created_date')
         return render(request, 'main/home.html', {'form':form, 'posts':posts})
 
-    @login_required
+    @method_decorator(login_required)
     def post(self, request):
         form = PostForm(request.POST, request.FILES)
         if form.is_valid():
             form.save(commit=False)
-            form.instance.owner = self.request.user
+            form.instance.owner = request.user
             form.save()
             title = form.cleaned_data.get('title')
             messages.success(request, f'{title} post has been published.')

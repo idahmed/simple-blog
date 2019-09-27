@@ -5,7 +5,10 @@ from .models import Post, Comment
 
 
 class PostForm(forms.ModelForm):
-    content = forms.CharField(widget=forms.Textarea(attrs={'rows':4, 'cols':50}))
+    title = forms.CharField(widget=forms.Textarea(
+        attrs={'rows':1, 'cols':10, 'style': 'border-color: blue;', 'placeholder': 'Title.'}), label='')
+    content = forms.CharField(widget=forms.Textarea(
+        attrs={'rows':4, 'cols':50, 'style': 'border-color: blue;', 'placeholder': 'Write your post here.'}), label='')
     class Meta:
         model = Post
         fields = [
@@ -13,9 +16,15 @@ class PostForm(forms.ModelForm):
         ]
 
 class CommentForm(forms.ModelForm):
-    content = forms.CharField(widget=forms.TextInput(attrs={'size':'60'}))
+    content = forms.CharField(widget=forms.TextInput(attrs={'size':'81', 'style': 'border-color: blue;', 'placeholder': 'Comment ....'}), label='')
     class Meta:
         model = Comment
         fields = [
             'content'
         ]
+
+
+        attrs={
+                'style': 'border-color: blue;',
+                'placeholder': 'Write your name here'
+            }

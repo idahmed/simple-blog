@@ -14,10 +14,10 @@
       </div>
     </div>
     {% if user.is_authenticated %}
-        <div class="input-group" type="hidden">
-            <form method="POST">
+        <div class="Card">
+            <form class="form-inline" method="POST">
                 {% csrf_token %}
-                {{ form|crispy }}       
+                {{ form|crispy }}
                 <span class="input-group-btn">
                     <button class="btn btn-outline-info" type="submit">Comment</button>
                 </span>
@@ -26,7 +26,23 @@
     {% endif %}
     {% if post.comments.all %}
         {% for comment in post.comments.all %}
-            {{ comment }}
+            <!-- Card -->
+            <div class="card">
+                <!-- Card content -->
+                <div class="card-body">
+                <!-- Title -->
+                <div class="form-inline">
+                    <h5 class="card-title">{{ comment.owner }}</h5>
+                    {% if user == comment.owner %}
+                        <button class="ml-auto">Edit</button>
+                    {% endif %}
+                </div>
+                <!-- Text -->
+                <p class="card-text">{{comment.content}}</p>
+                </div>
+                <p class="card-text ml-auto"><small class="text-muted">{{ comment.created_date }}</small></p>
+            </div>
+            <!-- Card -->
         {% endfor %}
     {% endif %}
 {% endblock %}
