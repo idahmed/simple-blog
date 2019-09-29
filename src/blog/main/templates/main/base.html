@@ -9,8 +9,15 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <title>Blog</title>
+
   </head>
-  <body>
+  <body style="height:100%; width:100%">
+    <div id="header" style="position:absolute; top:0px; left:0px; height:200px; right:0px;overflow:hidden;"> 
+    </div> 
+    <div id="content" style="position:absolute; top:200px; bottom:200px; left:0px; right:0px; overflow:auto;"> 
+    </div> 
+    <div id="footer" style="position:absolute; bottom:0px; height:200px; left:0px; right:0px; overflow:hidden;"> 
+    </div>
     <header>
       <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="{% url 'main:home' %}">Navbar</a>
@@ -43,6 +50,8 @@
         </ul>
       </nav>
     </header>
+    <br>
+    <br>
     <main role="main" class="container">
       <div class="row">
         <div class="col-md-8">
@@ -71,8 +80,9 @@
       </div>
     </main>
     <br>
+    </div>
         <!-- Footer -->
-    <footer class="page-footer font-small-dark teal pt-4 footer-dark bg-dark fixed-bottom">
+    <footer class="page-footer font-small-dark teal pt-4 footer-dark bg-dark">
       <div class="container-fluid text-center text-md-left">
         <div class="row">
           <div class="col-md-6 mt-md-0 mt-3">

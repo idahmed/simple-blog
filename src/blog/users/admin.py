@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 
-from .models import User
+from .models import User, Profile
 
 class UserAdmin(admin.ModelAdmin):
 
@@ -14,3 +14,12 @@ class UserAdmin(admin.ModelAdmin):
         model = User
 
 admin.site.register(User, UserAdmin)
+
+
+class ProfileAdmin(admin.ModelAdmin):
+
+    class Meta:
+        model = User
+        fields = '__all__'
+
+admin.site.register(Profile, ProfileAdmin)

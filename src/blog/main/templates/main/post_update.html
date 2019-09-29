@@ -1,0 +1,22 @@
+{% extends 'main/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div class="content-section">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                {{ form|crispy }}
+            </fieldset>
+            <div class="form-inline">
+                <button class="btn btn-outline-info" type="submit">Save</button>
+                <a href="{% url 'main:post' post.pk %}">
+                    <button type="button" class="btn btn-secondary">Cancel</button>
+                </a>
+                <a class="ml-auto" href="{% url 'main:post-delete' post.pk %}">
+                    <button class="btn btn-danger" type="button">Delete</button>
+                </a>
+            </div>
+        </form>
+    </div>
+{% endblock %}

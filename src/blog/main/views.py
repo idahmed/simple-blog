@@ -57,3 +57,35 @@ class PostDetails(View):
             form.instance.post = post
             form.save()
             return redirect(f'/blog/post/{pk}')
+
+
+class PostUpdate(UserPassesTestMixin, generic.edit.UpdateView):
+
+    model = Post
+    context_object_name = 'post'
+    form_class = PostForm
+    template_name = 'main/post_update.html'
+    
+    def get_success_url(self):
+        return reverse("main:post", kwargs={'pk':self.get_object().pk})
+
+    def test_func(self):
+        post = self.get_object()
+        if self.request.user == post.owner:
+            return True
+        return False
+
+
+class PostDelete(UserPassesTestMixin, generic.edit.DeleteView):
+
+    model = Post
+    context_object_name = 'post'
+    
+    def get_success_url(self):
+        return reverse("main:home")
+
+    def test_func(self):
+        post = self.get_object()
+        if self.request.user == post.owner:
+            return True
+        return False
