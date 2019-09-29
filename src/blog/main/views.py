@@ -8,7 +8,7 @@ from django.contrib.auth.mixins import (
 )
 
 
-from .models import Post
+from .models import Post, Comment
 from .forms import PostForm, CommentForm
 
 class Home(View):
@@ -87,5 +87,22 @@ class PostDelete(UserPassesTestMixin, generic.edit.DeleteView):
     def test_func(self):
         post = self.get_object()
         if self.request.user == post.owner:
+            return True
+        return False
+
+
+class CommentDelete(UserPassesTestMixin, generic.edit.DeleteView):
+
+    model = Comment
+    context_object_name = 'comment'
+    
+
+    def get_success_url(self):
+        post_id = self.get_object().post.pk
+        return reverse("main:post", kwargs={'pk':post_id})
+
+    def test_func(self):
+        comment = self.get_object()
+        if self.request.user == comment.owner:
             return True
         return False

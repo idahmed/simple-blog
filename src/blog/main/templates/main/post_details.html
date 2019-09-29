@@ -3,6 +3,22 @@
 
 {% block content %}
 <br>
+    <form class="form-inline">
+        <img class="rounded-circle article-img" src="{{ post.owner.profile.profile_pic.url }}" style="width:50px; height:50px;">
+        <div class="media-body">
+          <div class="article-metadata">
+            <a href="{% url 'users:profile' post.owner.pk %}"><h3 class="ml-4"  style="color: black">{{ post.owner.fullname }}</h3></a>
+          </div>
+        </div>
+        <div class="dropdown ml-auto">
+            <h5 class="text-muted dropdown-toggle"  id="{{post.pk}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            </h5>
+            <div class="dropdown-menu" aria-labelledby="{{post.pk}}">
+                <a class="dropdown-item" href="{% url 'main:post-update' post.pk %}">Update</a>
+                <a class="dropdown-item" href="{% url 'main:post-delete' post.pk %}">Delete</a>
+            </div>
+        </div>
+    </form>
     <div class="card mb-3">
         {% if post.image %}
           <img src="{{post.image.url}}" class="card-img-top" alt="post photo">
@@ -34,7 +50,13 @@
                 <div class="form-inline">
                     <h5 class="card-title">{{ comment.owner }}</h5>
                     {% if user == comment.owner %}
-                        <button class="ml-auto">Edit</button>
+                        <div class="dropdown ml-auto">
+                            <h5 class="text-muted dropdown-toggle"  id="{{comment.pk}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            </h5>
+                            <div class="dropdown-menu" aria-labelledby="{{comment.pk}}">
+                              <a class="dropdown-item" href="{% url 'main:comment-delete' comment.pk %}">Delete</a>
+                            </div>
+                        </div>
                     {% endif %}
                 </div>
                 <!-- Text -->

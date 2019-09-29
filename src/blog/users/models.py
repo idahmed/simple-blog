@@ -76,10 +76,10 @@ class Profile(models.Model):
     bio = models.TextField(blank=True, null=True)
     address = models .TextField(blank=True, null=True)
     phone = models.IntegerField(blank=True, null=True)
-    gender = models.CharField(choices=genders, max_length=255)
+    gender = models.CharField(choices=genders, max_length=255, blank=True, null=True)
 
-    def save(self):
-        super().save()  # saving image first
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)  # saving image first
         if self.profile_pic:
             img = Image.open(self.profile_pic.path) # Open image using self
 
