@@ -37,12 +37,12 @@
               <div class="dropdown-menu" aria-labelledby="account">
                 {% if user.is_authenticated %}
                   <a class="dropdown-item" href="{% url 'users:profile' user.pk %}">Profile</a>
-                  <a class="dropdown-item" href="{% url 'users:logout' %}">Logout</a>
+                  <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
                   {% if user.is_superuser %}
                     <a class="dropdown-item" href="/admin">Admin Site</a>
                   {% endif %}
                 {% else %}
-                  <a class="dropdown-item" href="{% url 'users:login' %}">Login</a>
+                  <a class="dropdown-item" href="{% url 'login' %}">Login</a>
                   <a class="dropdown-item" href="{% url 'users:register' %}">Register</a>
                 {% endif %}
               </div>
