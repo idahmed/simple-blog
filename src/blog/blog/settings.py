@@ -146,7 +146,7 @@ MEDIA_URL = '/media/'
 
 #extra settings.
 LOGIN_REDIRECT_URL = 'main:home'
-LOGOUT_REDIRECT_URL = 'login'
+LOGOUT_REDIRECT_URL = 'users:login'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 

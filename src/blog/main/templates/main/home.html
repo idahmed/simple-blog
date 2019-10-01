@@ -5,7 +5,7 @@
 
 {% block content %}
   {% if not user.is_authenticated %}
-  <h4> Please <a href="{% url 'login' %}">Log In</a> to unlock more features.</h4>
+  <h4> Please <a href="{% url 'users:login' %}">Log In</a> to unlock more features.</h4>
   {% endif %}
     {% if user.is_authenticated %}
       <center>
@@ -48,7 +48,7 @@
         <img class="rounded-circle article-img" src="{{ post.owner.profile.profile_pic.url }}" style="width:50px; height:50px;">
         <div class="media-body">
           <div class="article-metadata">
-            <a class="ml-4" href="{% url 'users:profile' post.owner.pk %}">{{ post.owner.fullname }}</a>
+              <h3 class="ml-4"  style="color: black">{{ post.owner.fullname }}</h3>
           </div>
         </div>
         {% if post.owner == user %}

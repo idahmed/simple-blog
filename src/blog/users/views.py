@@ -37,32 +37,9 @@ class Register(View):
         return render(request, 'users/register.html', {'form':form})
 
 
-
 class ProfileView(View):
 
-    def get(self, request, pk):
-        usr = User.objects.get(pk=pk)
+    def get(self, request, email):
+        usr = get_object_or_404(User, email=email)
         profile = usr.profile
-        if request.user.pk == pk:
-            form = ProfileForm(request.POST or None, request.FILES or None, instance=profile)
-            return render(request, 'users/profile.html', {'form': form, 'profile':profile})
-        else:
-            return render(request, 'users/profile.html', {'profile':profile})
-
-    @method_decorator(login_required)
-    def post(self, request, pk):
-        usr = User.objects.get(pk=pk)
-        if request.user == usr:
-            profile = usr.profile
-            form = ProfileForm(request.POST or None, request.FILES or None, instance=profile)
-            if request.method == 'POST':
-                if form.is_valid():
-                    form.save()
-                    messages.success(request, f'Your profile is now updated.')
-                    return render(request, 'users/profile.html', {'form': form, 'profile':profile})
-                
-                messages.error(request, f'pleas try again later.')
-            return render(request, 'users/profile.html', {'form': form, 'profile':profile})
-        
-        messages.error(request, f'Forbiden action!')
-        return redirect('main:home')
+        return render(request, 'users/profile.html', {'profile':profile})

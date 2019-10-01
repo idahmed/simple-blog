@@ -56,7 +56,7 @@ class PostDetails(View):
             form.instance.owner = request.user
             form.instance.post = post
             form.save()
-            return redirect(f'/blog/post/{pk}')
+            return redirect(f'/post/{pk}')
 
 
 class PostUpdate(UserPassesTestMixin, generic.edit.UpdateView):
