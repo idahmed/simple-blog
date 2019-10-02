@@ -80,7 +80,7 @@
                             {{form|crispy}}
                             <div class="form-inline">
                                 <button class="btn btn-outline-info" type="submit">Save</button>
-                                <a href="{% url 'users:account' user.email %}">
+                                <a href="{% url 'users:account' profile.owner.email %}">
                                     <button type="button" class="btn btn-secondary">Cancel</button>
                                 </a>
                             </div>
