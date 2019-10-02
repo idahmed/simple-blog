@@ -30,7 +30,7 @@ class Register(View):
             user = User.objects.get(email=email)
             Profile.objects.create(owner=user)
             messages.success(request, f'{email} accout successfully created. Sin In and enjoy.')
-            return redirect('users:login')
+            return redirect('login')
 
         form = UserRegisterForm()
         messages.error(request, f'pleas check your infos and try again.')
@@ -42,4 +42,26 @@ class ProfileView(View):
     def get(self, request, email):
         usr = get_object_or_404(User, email=email)
         profile = usr.profile
-        return render(request, 'users/profile.html', {'profile':profile})
+        if request.user == usr:
+            form = ProfileForm(
+                request.POST or None,
+                request.FILES or None,
+                instance = profile
+            )
+            return render(request, 'users/profile.html', {'profile': profile, 'form': form})
+        
+        return render(request, 'users/profile.html', {'profile': profile})
+    
+    @method_decorator(login_required)
+    def post(self, request, email):
+        usr = get_object_or_404(User, email=email)
+        if request.user == usr:
+            profile = usr.profile
+            form = ProfileForm(
+                request.POST or None,
+                request.FILES or None,
+                instance = profile)
+            if form.is_valid():
+                form.save()
+                messages.success(request, f'Profile updated success.')
+                return render(request, 'users/profile.html', {'profile': profile, 'form': form})
