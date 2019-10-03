@@ -5,4 +5,4 @@ from .models import Post, Comment
 
 admin.site.register(Post)
 admin.site.register(Comment)
-admin.site.site_url = '/blog'
+admin.site.site_url = '/'
