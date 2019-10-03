@@ -11,6 +11,9 @@
                     <li class="nav-item">
                         <a href="" data-target="#profile" data-toggle="tab" class="nav-link active">Profile</a>
                     </li>
+                    <li class="nav-item">
+                        <a href="" data-target="#posts" data-toggle="tab" class="nav-link">Posts</a>
+                    </li>
                     {% if request.user == profile.owner %}
                         <li class="nav-item">
                             <a href="" data-target="#edit" data-toggle="tab" class="nav-link">Edit</a>
@@ -73,6 +76,37 @@
                             </div>
                         </div>
                         <!--/row-->
+                    </div>
+                    <div class="tab-pane" id="posts">
+                        {% for post in profile.owner.posts.all %}
+                            <div class="card mb-3">
+                                {% if post.image %}
+                                    <a href="{% url 'main:post' post.pk %}">
+                                    <img src="{{post.image.url}}" class="card-img-top" alt="post photo">
+                                    </a>
+                                {% endif %}
+                                <div class="card-body">
+                                <form class="form-inline">
+                                    <h5 class="card-title">{{ post.title }}</h5>
+                                    </form>
+                                <a href="{% url 'main:post' post.pk %}" style="color:black">
+                                <p class="card-text">{{ post.content|truncatewords:50 }}</p>
+                                </a>
+                                <p class="card-text"><small class="text-muted">{{ post.created_date }}</small></p>
+                                </div>
+                                {% if post.owner == user %}
+                                <form class="form-inline">
+                                    <a class="dropdown-item" href="{% url 'main:post-update' post.pk %}">
+                                        <button class="btn-primary-info">Update</button>
+                                    </a>
+                                    <a class="dropdown-item" href="{% url 'main:post-delete' post.pk %}">
+                                        <button class="btn-primary-danger">Delete</button>
+                                    </a>
+                                </form>
+                                {% endif %}
+                            </div>
+                            <br>
+                        {% endfor %}
                     </div>
                     <div class="tab-pane" id="edit">
                         <form role="form" method='POST' enctype="multipart/form-data">

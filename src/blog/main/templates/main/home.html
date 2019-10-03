@@ -4,79 +4,125 @@
 
 
 {% block content %}
-  {% if not user.is_authenticated %}
-  <h5> Please <a href="{% url 'login' %}">Log In</a> to unlock more features.</h5>
-  {% endif %}
-    {% if user.is_authenticated %}
-      <center>
-        <!-- Button trigger modal -->
-        <button type="button" style="height:60px;width:700px" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-            Add a post
-        </button>
-      </center>
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalCenterTitle">Feel free to post yor thoughts.</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                </div>
-                <div class="modal-body">
-                    <div class="card card-body">
-                        <form method="POST" enctype="multipart/form-data">
-                            {% csrf_token %}
-                            {{form|crispy}}
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Save Post</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            </div>
-        </div>
-    {% endif %}
-
-    <br>
-    <br>
-    {% for post in posts %}
-      <form class="form-inline">
-        <img class="rounded-circle article-img" src="{{ post.owner.profile.profile_pic.url }}" style="width:50px; height:50px;">
-        <div class="media-body">
-          <div class="article-metadata">
-            <a href="{% url 'users:account' post.owner.email %}">
-              <h3 class="ml-4"  style="color: black">{{ post.owner.fullname }}</h3>
-            </a>
-          </div>
-        </div>
-        {% if post.owner == user %}
-          <div class="dropdown ml-auto">
-            <h5 class="text-muted dropdown-toggle"  id="{{post.pk}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            </h5>
-            <div class="dropdown-menu" aria-labelledby="{{post.pk}}">
-              <a class="dropdown-item" href="{% url 'main:post-update' post.pk %}">Update</a>
-              <a class="dropdown-item" href="{% url 'main:post-delete' post.pk %}">Delete</a>
-            </div>
-          </div>
-        {% endif %}
-      </form>
-      <div class="card mb-3">
-          {% if post.image %}
-            <img src="{{post.image.url}}" class="card-img-top" alt="post photo">
-          {% endif %}
-        <div class="card-body">
-          <form class="form-inline">
-            <h5 class="card-title">{{ post.title }}</h5>
-            </form>
-          <a href="{% url 'main:post' post.pk %}" style="color:black">
-          <p class="card-text">{{ post.content|truncatewords:50 }}</p>
+  <div class="container">
+    <div class="row">
+    <div class="col-12 col-md-6">
+        {% if user.is_authenticated %}
+          <!-- Button trigger modal -->
+          <button  class="btn btn-outline-info my-2 my-sm-0" data-toggle="modal" data-target="#exampleModalCenter">
+              Add a post
+          </button>
+        {% elif  not user.is_authenticated%}
+          <a href="{% url 'login' %}">
+            <button class="btn btn-outline-info my-2 my-sm-0">Login</button>
           </a>
-          <p class="card-text"><small class="text-muted">{{ post.created_date }}</small></p>
+          <a href="{% url 'users:register' %}">
+              <button class="btn btn-outline-info my-2 my-sm-0">Register</button>
+            </a>
+        {% endif %}
+      </div>
+      <div class="col-12 col-md-6">
+        <form class="form-inline ml-2" method="get" action="">
+          <input class="form-control mr-sm-2" name="q" type="search" placeholder="Search posts" aria-label="Search" value="{{ request.GET.q }}">
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalCenterTitle">Feel free to post yor thoughts.</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+          </button>
+          </div>
+          <div class="modal-body">
+              <div class="card card-body">
+                  <form method="POST" enctype="multipart/form-data">
+                      {% csrf_token %}
+                      {{form|crispy}}
+                      <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                          <button type="submit" class="btn btn-primary">Save Post</button>
+                      </div>
+                  </form>
+              </div>
+          </div>
+      </div>
+      </div>
+  </div>
+
+  <br>
+  <br>
+
+  {% for post in posts %}
+    <form class="form-inline">
+      <img class="rounded-circle article-img" src="{{ post.owner.profile.profile_pic.url }}" style="width:50px; height:50px;">
+      <div class="media-body">
+        <div class="article-metadata">
+          <a href="{% url 'users:account' post.owner.email %}">
+            <h3 class="ml-4"  style="color: black">{{ post.owner.fullname }}</h3>
+          </a>
         </div>
       </div>
-    {% endfor %}
+      {% if post.owner == user %}
+        <div class="dropdown ml-auto">
+          <h5 class="text-muted dropdown-toggle"  id="{{post.pk}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          </h5>
+          <div class="dropdown-menu" aria-labelledby="{{post.pk}}">
+            <a class="dropdown-item" href="{% url 'main:post-update' post.pk %}">Update</a>
+            <a class="dropdown-item" href="{% url 'main:post-delete' post.pk %}">Delete</a>
+          </div>
+        </div>
+      {% endif %}
+    </form>
+    <div class="card mb-3">
+        {% if post.image %}
+          <a href="{% url 'main:post' post.pk %}">
+            <img src="{{post.image.url}}" class="card-img-top" alt="post photo">
+          </a>
+        {% endif %}
+      <div class="card-body">
+        <form class="form-inline">
+          <h5 class="card-title">{{ post.title }}</h5>
+          </form>
+        <a href="{% url 'main:post' post.pk %}" style="color:black">
+        <p class="card-text">{{ post.content|truncatewords:50 }}</p>
+        </a>
+        <p class="card-text"><small class="text-muted">{{ post.created_date }}</small></p>
+      </div>
+    </div>
+    <br>
+  {% endfor %}
+
+  <nav aria-label="pagination">
+    <ul class="pagination justify-content-center">
+      {% if posts.has_previous %}
+      <li class="page-item"><a class="page-link" href="?page=1">First</a></li>
+      <li class="page-item"><a class="page-link" href="?page={{ posts.previous_page_number }}">Previous</a></li>
+      {% else %}
+        <li class="page-item disabled">
+          <span class="page-link">Previous</span>
+        </li>
+      {% endif %}
+      <li class="page-item active">
+        <span class="page-link">
+          {{ posts.number }} / {{ posts.paginator.num_pages }}
+          <span class="sr-only">(current)</span>
+        </span>
+      </li>
+      {% if posts.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{ posts.next_page_number }}">Next</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{ posts.paginator.num_pages}}">Last</a></li>
+      {% else %}
+        <li class="page-item disabled">
+          <a class="page-link" href="#">Next</a>
+        </li>
+      {% endif %}
+    </ul>
+  </nav>
 {% endblock %}

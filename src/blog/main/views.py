@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect, reverse, get_object_or_404
+from django.db.models import Q
+from django.core.paginator import Paginator
 from django.views import View, generic
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -18,7 +20,17 @@ class Home(View):
 
     def get(self, request):
         form = PostForm()
-        posts = Post.objects.all().order_by('-created_date')
+        posts_list = Post.objects.all().order_by('-created_date')
+        query = request.GET.get('q')
+        if query:
+            posts_list = posts_list.filter(
+                Q(title__icontains=query) |
+                Q(content__icontains=query) |
+                Q(owner__first_name__icontains=query) |
+                Q(owner__last_name__icontains=query)
+                ).distinct()
+        paginator = Paginator(posts_list, 5)
+        posts = paginator.get_page(request.GET.get('page'))
         return render(request, 'main/home.html', {'form':form, 'posts':posts})
 
     @method_decorator(login_required)

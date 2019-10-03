@@ -12,14 +12,16 @@
             </a>
           </div>
         </div>
-        <div class="dropdown ml-auto">
-            <h5 class="text-muted dropdown-toggle"  id="{{post.pk}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            </h5>
-            <div class="dropdown-menu" aria-labelledby="{{post.pk}}">
-                <a class="dropdown-item" href="{% url 'main:post-update' post.pk %}">Update</a>
-                <a class="dropdown-item" href="{% url 'main:post-delete' post.pk %}">Delete</a>
+        {% if user == post.owner %}
+            <div class="dropdown ml-auto">
+                <h5 class="text-muted dropdown-toggle"  id="{{post.pk}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                </h5>
+                <div class="dropdown-menu" aria-labelledby="{{post.pk}}">
+                    <a class="dropdown-item" href="{% url 'main:post-update' post.pk %}">Update</a>
+                    <a class="dropdown-item" href="{% url 'main:post-delete' post.pk %}">Delete</a>
+                </div>
             </div>
-        </div>
+        {% endif %}
     </form>
     <br>
     <div class="card mb-3">
